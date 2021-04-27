@@ -7,7 +7,7 @@ A little Reports generator tool in Python.
 * Python 3.7
 * Photoshop 
 
-## Setup
+## Setup & Running
 1. Install the dependencies:
   ```
   pip install -r .\requirements.txt

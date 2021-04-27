@@ -1,6 +1,5 @@
 import re
 from psd_tools import PSDImage
-# from psd_tools.api.layers import PixelLayer
 from psd_tools.api.layers import Group
 from datetime import date
 import os, csv
@@ -12,9 +11,6 @@ import lmsHandler
 metrics_file = r".\data\Metrics.csv"
 lms_file = r".\data\lmsIndicators.csv"
 
-baseline = {'SAMPLE DATE': '1/13/2021', 'ENVIRONMENT': 'Production', 'ACTIVE USERS': '33688', 'AVAILABLE USERS': '33844', 'ENABLED USERS': '33985', 'TOTAL USERS': '62960', 'ENROLLMENTS': '1944698',
- 'COURSES': '52470', 'ENABLED COURSES': '9531', 'LOGINS': '2194', 'ASSESSMENTS': '0', 'DISCUSSIONS': '131173', 'PLUGINS': '107', 'COURSEDOCS': '92442', 'UNIQUE ACTIVE USERS ': ''}
-
 with open(metrics_file) as f:
   metrics_data = [{str(k): str(v) for k, v in row.items() }
     for row in csv.DictReader(f, skipinitialspace=True)]
@@ -22,11 +18,9 @@ with open(metrics_file) as f:
 with open(lms_file) as f:
   lms_data = [{str(k): str(v) for k, v in row.items()}
     for row in csv.DictReader(f, skipinitialspace=True)]
-lms_data.remove(baseline)
 
 def numOfDays(date1, date2):
     return (date2-date1).days
-
 
 def process_date(dd):
     datetimeobject = datetime.datetime.strptime(dd, '%m/%d/%Y')
@@ -52,8 +46,14 @@ if numOfDays(start, to ) != 4:
     print("Wrong inputs")
     exit()
 
-metricsHandler.process_metrics_data(metrics_data,start,to) 
-lmsHandler.process_data(lms_data, baseline,start, to)
+print("")
+baseline_date = input('baseline date: ')
+try:
+  start = datetime.datetime.strptime(baseline_date, date_format)
+except ValueError:
+    print("Incorrect date string format. It should be m/d/Y")
+    exit()
+lmsHandler.process_data(lms_data, baseline_date,start, to)
 
 print("")
 week = input('تقرير الأسبوع: ')
@@ -64,6 +64,8 @@ chats = input('المحادثات الفورية: \n')
 print("\n")
 msgs = input('رسائل البريد الإلكتروني: \n')
 print("\nGenerating report start from {0} to {1}...\n".format(sys.argv[1],sys.argv[2] ))
+
+metricsHandler.process_metrics_data(metrics_data,start,to) 
 
 info_string = "{2} ملخص الأسبوع {0} من {1} إلى ".format(week.strip(), re.findall(
     r"[\d]{4}-[\d]{2}-[\d]{2}?", process_date(sys.argv[1]))[0], re.findall(
@@ -129,7 +131,6 @@ def manage_bars(vals, lable_name):
                     if bar.name == "bar5":
                         bar.top = new_copy["5"]
 
-
 manage_bars(logins_chart_list, "A1")
 manage_bars(attendees_chart_list, "A2")
 manage_bars(attendeesu_chart_list, "A3")
@@ -173,10 +174,8 @@ def bind_data():
   doc.ArtLayers["AR4"].TextItem.contents = str(attendees_chart_casted[3])
   doc.ArtLayers["AR5"].TextItem.contents = str(attendees_chart_casted[4])
 
-  # info
   doc.ArtLayers["info"].TextItem.contents = str(info_string)
 
-  #tech support info 
   doc.ArtLayers["cards"].TextItem.contents = str(cards)
   doc.ArtLayers["chats"].TextItem.contents = str(chats)
   doc.ArtLayers["msgs"].TextItem.contents = str(msgs)

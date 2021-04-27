@@ -1,5 +1,4 @@
 import datetime
-import re
 
 result = {"SessionInstancesLaunched":0,
         "SessionInstancesPeak":0,

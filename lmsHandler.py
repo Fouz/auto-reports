@@ -1,24 +1,27 @@
-import pandas as pd
-import csv
-import ast
 import datetime
 from datetime import datetime
-import re
-import sys
-from collections import OrderedDict
 
 result = {"LOGINS":0,
     "ASSESSMENTS":0,
     "DISCUSSIONS":0,
     "COURSEDOCS":0}
 
-def process_data(data,baseline,  start, to):
+def process_data(data,baseline_date,  start, to):
 
-    result["LOGINS"] = find_sum(data,"LOGINS", start = start, to = to)
-    result["ASSESSMENTS"] = find_sum(data,"ASSESSMENTS", start = start, to = to)
-    result["DISCUSSIONS"] = do_the_thing(data,baseline,  "DISCUSSIONS", start=start, to=to)
-    result["COURSEDOCS"] = do_the_thing(data, baseline,  "COURSEDOCS", start=start, to=to)
-
+    for item in data:
+        if baseline_date in item.values():
+            baseline = item
+        
+    try:
+        data.remove(baseline)
+        result["LOGINS"] = find_sum(data,"LOGINS", start = start, to = to)
+        result["ASSESSMENTS"] = find_sum(data,"ASSESSMENTS", start = start, to = to)   
+        result["DISCUSSIONS"] = do_the_thing(data,baseline,  "DISCUSSIONS", start=start, to=to)
+        result["COURSEDOCS"] = do_the_thing(data, baseline,  "COURSEDOCS", start=start, to=to)
+    except:
+        print("Not a baseline date!")
+        exit()
+    
 def find_sum(data , key, start, to ):
     sum = 0 
     for item in data:
@@ -42,4 +45,5 @@ def do_the_thing(data, baseline, key, start, to):
     max_value = max(dataList) 
     base_line = int(baseline[key])
     res = (max_value - base_line)
+    # print(f'{res:,}')
     return(f'{res:,}')
