@@ -92,7 +92,6 @@ for item in metrics_data:
 
 psd = PSDImage.open('template.psd')
 def manage_bars(vals, lable_name):
-
     highst = 2782
     lowest = 3254
     list_numbers = ["1", "2", "3", "4", "5"]
@@ -188,7 +187,7 @@ doc.Close()
 psApp.Quit()
 
 psd = PSDImage.open('tmp.psd')
-report_title = "{}-report.jpg".format(str(date.today()))
+report_title = "تقرير الأسبوع {}.jpg".format(week)
 psd.composite().save(report_title)
 
 if os.path.exists("tmp.psd"):
