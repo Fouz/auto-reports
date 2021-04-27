@@ -12,10 +12,6 @@ result = {"SessionInstancesLaunched":0,
 
 def process_metrics_data(data, start="",  to =""):
 
-        # if start.strip() != "" and to.strip() != "":
-        #     start = datetime.datetime.strptime(start, '%m/%d/%Y')
-        #     to = datetime.datetime.strptime(to, '%m/%d/%Y')
-        
         result["SessionInstancesLaunched"] = find_sum(data,"SessionInstancesLaunched", start = start, to =to )
         result["Attendees"] = find_sum(data,"Attendees", start = start, to =to )
         result["AttendeesUnique"] = find_sum(data,"AttendeesUnique", start = start, to =to )
