@@ -45,7 +45,6 @@ except ValueError:
 if numOfDays(start, to ) != 4:
     print("Wrong inputs")
     exit()
-
 print("")
 baseline_date = input('baseline date: ')
 try:
@@ -55,7 +54,7 @@ except ValueError:
     exit()
 lmsHandler.process_data(lms_data, baseline_date,start, to)
 
-print("")
+print("\n")
 week = input('تقرير الأسبوع: ')
 print("\n\n")
 cards = input('عدد بطاقات الدعم الفني:  \n')
@@ -80,15 +79,13 @@ for item in lms_data:
 
 attendees_chart_list = []
 attendees_chart_casted = []
-for item in metrics_data:
-      val = int(item["Attendees"])
-      attendees_chart_list.append(int(val))
-      attendees_chart_casted.append(f'{val:,}')
-
 attendeesu_chart_list = []
 attendeesu_casted = []
 for item in metrics_data:
       val = int(item["AttendeesUnique"])
+      val2 = int(item["Attendees"])
+      attendees_chart_list.append(int(val2))
+      attendees_chart_casted.append(f'{val2:,}')
       attendeesu_chart_list.append(int(val))
       attendeesu_casted.append(f'{val:,}')
 
@@ -137,53 +134,60 @@ manage_bars(attendeesu_chart_list, "A3")
 
 psd.save("tmp.psd")
 
-psApp = win32com.client.Dispatch("Photoshop.Application")
-psApp.Open(r""+str(os.path.join(sys.path[0], "tmp.psd")))
-doc = psApp.Application.ActiveDocument
-
 def bind_data():
-  doc.ArtLayers["SessionInstancesLaunched"].TextItem.contents = str(metricsHandler.result['SessionInstancesLaunched'])
-  doc.ArtLayers["SessionInstancesPeak"].TextItem.contents = str(metricsHandler.result['SessionInstancesPeak'])
-  doc.ArtLayers["SessionTime"].TextItem.contents = str(metricsHandler.result['SessionTime'])
-  doc.ArtLayers["Attendees"].TextItem.contents = str(metricsHandler.result['Attendees'])
-  doc.ArtLayers["AttendeesUnique"].TextItem.contents = str(metricsHandler.result['AttendeesUnique'])
-  doc.ArtLayers["AttendeesPeak"].TextItem.contents = str(metricsHandler.result['AttendeesPeak'])
-  doc.ArtLayers["Recordings"].TextItem.contents = str(metricsHandler.result['Recordings'])
-  doc.ArtLayers["RecordingsDuration"].TextItem.contents = str(metricsHandler.result['RecordingsDuration'])
 
-  doc.ArtLayers["LOGINS"].TextItem.contents = str(lmsHandler.result['LOGINS'])
-  doc.ArtLayers["ASSESSMENTS"].TextItem.contents = str(lmsHandler.result['ASSESSMENTS'])
-  doc.ArtLayers["DISCUSSIONS"].TextItem.contents = str(lmsHandler.result['DISCUSSIONS'])
-  doc.ArtLayers["COURSEDOCS"].TextItem.contents = str(lmsHandler.result['COURSEDOCS'])
+    psApp = win32com.client.Dispatch("Photoshop.Application")
+    psApp.Open(r""+str(os.path.join(sys.path[0], "tmp.psd")))
+    doc = psApp.Application.ActiveDocument
 
-  doc.ArtLayers["L1"].TextItem.contents = str(logins_chart_casted[0])
-  doc.ArtLayers["L2"].TextItem.contents = str(logins_chart_casted[1])
-  doc.ArtLayers["L3"].TextItem.contents = str(logins_chart_casted[2])
-  doc.ArtLayers["L4"].TextItem.contents = str(logins_chart_casted[3])
-  doc.ArtLayers["L5"].TextItem.contents = str(logins_chart_casted[4])
+    doc.ArtLayers["SessionInstancesLaunched"].TextItem.contents = str(metricsHandler.result['SessionInstancesLaunched'])
+    doc.ArtLayers["SessionInstancesPeak"].TextItem.contents = str(metricsHandler.result['SessionInstancesPeak'])
+    doc.ArtLayers["SessionTime"].TextItem.contents = str(metricsHandler.result['SessionTime'])
+    doc.ArtLayers["Attendees"].TextItem.contents = str(metricsHandler.result['Attendees'])
+    doc.ArtLayers["AttendeesUnique"].TextItem.contents = str(metricsHandler.result['AttendeesUnique'])
+    doc.ArtLayers["AttendeesPeak"].TextItem.contents = str(metricsHandler.result['AttendeesPeak'])
+    doc.ArtLayers["Recordings"].TextItem.contents = str(metricsHandler.result['Recordings'])
+    doc.ArtLayers["RecordingsDuration"].TextItem.contents = str(metricsHandler.result['RecordingsDuration'])
 
-  doc.ArtLayers["AU1"].TextItem.contents = str(attendeesu_casted[0])
-  doc.ArtLayers["AU2"].TextItem.contents = str(attendeesu_casted[1])
-  doc.ArtLayers["AU3"].TextItem.contents = str(attendeesu_casted[2])
-  doc.ArtLayers["AU4"].TextItem.contents = str(attendeesu_casted[3])
-  doc.ArtLayers["AU5"].TextItem.contents = str(attendeesu_casted[4])
+    doc.ArtLayers["LOGINS"].TextItem.contents = str(lmsHandler.result['LOGINS'])
+    doc.ArtLayers["ASSESSMENTS"].TextItem.contents = str(lmsHandler.result['ASSESSMENTS'])
+    doc.ArtLayers["DISCUSSIONS"].TextItem.contents = str(lmsHandler.result['DISCUSSIONS'])
+    doc.ArtLayers["COURSEDOCS"].TextItem.contents = str(lmsHandler.result['COURSEDOCS'])
 
-  doc.ArtLayers["AR1"].TextItem.contents = str(attendees_chart_casted[0])
-  doc.ArtLayers["AR2"].TextItem.contents = str(attendees_chart_casted[1])
-  doc.ArtLayers["AR3"].TextItem.contents = str(attendees_chart_casted[2])
-  doc.ArtLayers["AR4"].TextItem.contents = str(attendees_chart_casted[3])
-  doc.ArtLayers["AR5"].TextItem.contents = str(attendees_chart_casted[4])
+    doc.ArtLayers["L1"].TextItem.contents = logins_chart_casted[0]
+    doc.ArtLayers["L2"].TextItem.contents = logins_chart_casted[1]
+    doc.ArtLayers["L3"].TextItem.contents = logins_chart_casted[2]
+    doc.ArtLayers["L4"].TextItem.contents = logins_chart_casted[3]
+    doc.ArtLayers["L5"].TextItem.contents = logins_chart_casted[4]
 
-  doc.ArtLayers["info"].TextItem.contents = str(info_string)
+    doc.ArtLayers["AU2"].TextItem.contents = attendeesu_casted[1]
+    doc.ArtLayers["AU3"].TextItem.contents = attendeesu_casted[2]
+    doc.ArtLayers["AU4"].TextItem.contents = attendeesu_casted[3]
+    doc.ArtLayers["AU5"].TextItem.contents = attendeesu_casted[4]
 
-  doc.ArtLayers["cards"].TextItem.contents = str(cards)
-  doc.ArtLayers["chats"].TextItem.contents = str(chats)
-  doc.ArtLayers["msgs"].TextItem.contents = str(msgs)
+    doc.ArtLayers["AR1"].TextItem.contents = attendees_chart_casted[0]
+    doc.ArtLayers["AR2"].TextItem.contents = attendees_chart_casted[1]
+    doc.ArtLayers["AR3"].TextItem.contents = attendees_chart_casted[2]
+    doc.ArtLayers["AR4"].TextItem.contents = attendees_chart_casted[3]
+    doc.ArtLayers["AR5"].TextItem.contents = attendees_chart_casted[4]
 
+    doc.ArtLayers["info"].TextItem.contents = info_string
+
+    doc.ArtLayers["cards"].TextItem.contents = cards
+    doc.ArtLayers["chats"].TextItem.contents = chats
+    doc.ArtLayers["msgs"].TextItem.contents = msgs
+
+    doc.SaveAs(r""+str(os.path.join(sys.path[0], "tmp.psd")))
+    doc.Close()
+    psApp.Quit()
+
+# try:
 bind_data()
-doc.SaveAs(r""+str(os.path.join(sys.path[0], "tmp.psd")))
-doc.Close()
-psApp.Quit()
+# except Exception as ex:
+#     template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+#     message = template.format(type(ex).__name__, ex.args)
+#     print (message)
+#     exit()
 
 psd = PSDImage.open('tmp.psd')
 report_title = "تقرير الأسبوع {}.jpg".format(week)

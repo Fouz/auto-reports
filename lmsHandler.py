@@ -1,10 +1,7 @@
 import datetime
 from datetime import datetime
 
-result = {"LOGINS":0,
-    "ASSESSMENTS":0,
-    "DISCUSSIONS":0,
-    "COURSEDOCS":0}
+result = {}
 
 def process_data(data,baseline_date,  start, to):
 

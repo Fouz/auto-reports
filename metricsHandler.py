@@ -1,13 +1,6 @@
 import datetime
 
-result = {"SessionInstancesLaunched":0,
-        "SessionInstancesPeak":0,
-        "SessionTime":0,
-        "Attendees":0,
-        "AttendeesUnique":0,
-        "AttendeesPeak":0,
-        "Recordings":0,
-        "RecordingsDuration":0}
+result = {}
 
 def process_metrics_data(data, start="",  to =""):
 
